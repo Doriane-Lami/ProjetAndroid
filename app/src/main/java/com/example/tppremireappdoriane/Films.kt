@@ -64,8 +64,12 @@ fun Films(viewModel: MainViewModel, windowClass: WindowSizeClass, navController:
 
 @Composable
 fun FilmsRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController, motcle : String ) {
+// ne fonctionne plus depuis que j'ai mis les if dans MainActivity pour ne pas afficher les barres
+    Text(text = "coucou")
     val movies by viewModel.movies.collectAsState()
+    System.out.println(movies)    //J'ai l'impression que movies ne se rempli plus...
 
+/*
     if (movies.isEmpty()) viewModel.searchMovies(motcle)
 
     LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
@@ -85,5 +89,5 @@ fun FilmsRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navCo
                 Text(movie.release_date, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
             }
         }
-    }
+    }*/
 }
