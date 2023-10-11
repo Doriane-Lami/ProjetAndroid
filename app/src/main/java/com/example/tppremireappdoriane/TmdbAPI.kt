@@ -13,12 +13,12 @@ interface TmdbAPI {
     @GET("trending/person/week")
     suspend fun dernieresPersonnes(@Query("api_key") api_key: String): Personnes
 
-    @GET("/search/movie")
-    suspend fun getFilmParMotCle(@Query("api_key") api_key: String, @Query("motcle") motcle: String): Movies
+    @GET("search/movie")
+    suspend fun getFilmParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): Movies
 
-    @GET("/search/tv")
-    suspend fun getTVParMotCle(@Query("api_key") api_key: String, @Query("motcle") motcle: String): TVs
+    @GET("search/tv")
+    suspend fun getTVParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): TVs
 
-    @GET("/search/person")
-    suspend fun getPersonneParMotCle(@Query("api_key") api_key: String, @Query("motcle") motcle: String): Personnes
+    @GET("search/person")
+    suspend fun getPersonneParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): Personnes
 }

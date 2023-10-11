@@ -36,10 +36,37 @@ fun Test(windowClass: WindowSizeClass, navController: NavController) {
 
 
 @Composable
-fun Films1(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
+fun Films(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
     val movies by viewModel.movies.collectAsState()
 
     if (movies.isEmpty()) viewModel.getMovies()
+
+    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
+        items(movies) { movie ->
+            Card(
+                Modifier.padding(8.dp) .fillMaxSize(),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                )
+            ) {
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w500" + movie.poster_path,
+                    contentDescription = "Affiche du film",
+                    Modifier.fillMaxSize()
+                )
+                Text(movie.original_title, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                Text(movie.release_date, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+            }
+        }
+    }
+}
+
+
+@Composable
+fun FilmsRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController, motcle : String ) {
+    val movies by viewModel.movies.collectAsState()
+
+    if (movies.isEmpty()) viewModel.searchMovies(motcle)
 
     LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
         items(movies) { movie ->
