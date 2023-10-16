@@ -21,4 +21,9 @@ interface TmdbAPI {
 
     @GET("search/person")
     suspend fun getPersonneParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): Personnes
+
+    @GET("tv/"id"?append_to_response=credits")
+    suspend fun getDetailsTV(@Query("api_key") api_key: String, @Query("id") id: String): TVDetails
 }
+
+//https://api.themoviedb.org/3/movie/157336?api_key=a8f00cd3af0d5728d07aa5c481f326a3&append_to_response=overview

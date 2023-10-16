@@ -148,7 +148,6 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .padding(top = 8.dp)
                                         .padding(horizontal = 4.dp)
-                                        .background(color = Color.Red)
                                         .height(50.dp)
                                         .fillMaxSize(),
                                     query = searchText,
