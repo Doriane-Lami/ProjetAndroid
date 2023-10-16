@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel(){
+class MainViewModel : ViewModel() {
+
+
 
     val movies = MutableStateFlow<List<Movie>>(listOf())
     val tvs = MutableStateFlow<List<TV>>(listOf())
     val personnes = MutableStateFlow<List<Personne>>(listOf())
+    val tvDetails = MutableStateFlow<TVDetails>(TVDetails())
 
     val api_key = "a8f00cd3af0d5728d07aa5c481f326a3"
 
@@ -40,9 +43,16 @@ class MainViewModel : ViewModel(){
     }
 
 
-    fun searchMovies(motcle : String){
+    fun searchMovies(motcle: String) {
         viewModelScope.launch {
             movies.value = retrofit.getFilmParMotCle(api_key, motcle).results
         }
     }
+
+    fun getTVdetails(tvid: Int) {
+        viewModelScope.launch {
+            tvDetails.value = retrofit.getDetailsTV(tvid, api_key)
+        }
+    }
+
 }

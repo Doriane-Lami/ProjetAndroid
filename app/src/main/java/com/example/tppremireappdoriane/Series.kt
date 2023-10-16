@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
@@ -25,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
     val tvs by viewModel.tvs.collectAsState()
@@ -35,7 +37,12 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
     LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
         items(tvs) { tv ->
             Card(
-                Modifier.padding(8.dp) .fillMaxSize(),
+                onClick = { //SerieDetails(tv.id, viewModel, windowClass, navController)
+                    navController.navigate("SerieDetails/${tv.id}")
+                          },
+                Modifier
+                    .padding(8.dp)
+                    .fillMaxSize(),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 )
@@ -51,3 +58,17 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
         }
     }
 }
+
+@Composable
+fun SerieDetails( tvid: Int, viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
+    val tvDetails by viewModel.tvDetails.collectAsState()
+
+    LaunchedEffect(true){
+        viewModel.getTVdetails()
+    }
+    Text(text = "hello")
+
+
+    }
+
+

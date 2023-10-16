@@ -51,6 +51,8 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 
 class MainActivity : ComponentActivity() {
@@ -157,7 +159,9 @@ class MainActivity : ComponentActivity() {
 
                                         //Attention il faut distinguer les pages de films/series/personnes
 
-                                        navController.navigate("RechercheFilm")
+                                        //navController.navigate("RechercheFilm")
+
+
 
                                     },
                                     active = true,
@@ -191,13 +195,21 @@ class MainActivity : ComponentActivity() {
                     composable("Home") { Screen(windowSizeClass, navController) }
                     composable("Films") { Films(viewModel, windowSizeClass, navController) }
                     composable("Series") { Series(viewModel, windowSizeClass, navController) }
-                    composable("Personnes") { Personnes(viewModel, windowSizeClass, navController) }
+                    composable("Personnes") { PersonnesAffiche(viewModel, windowSizeClass, navController) }
                     composable("RechercheFilm") {
                         FilmsRecherche(
                             viewModel,
                             windowSizeClass,
                             navController,
                             searchText
+                        )
+                    }
+                    composable("SerieDetails/{tvid}", arguments = listOf(navArgument("tvid"){type = NavType.IntType})) {
+                        SerieDetails(
+                            tvid,
+                            viewModel,
+                            windowSizeClass,
+                            navController
                         )
                     }
                 }
