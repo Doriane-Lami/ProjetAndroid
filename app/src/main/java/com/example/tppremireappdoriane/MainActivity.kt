@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
             var currentDestination = navBackStackEntry?.destination
 
 
-            val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+            //val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
 
             Scaffold(
