@@ -15,6 +15,8 @@ class MainViewModel : ViewModel() {
     val tvs = MutableStateFlow<List<TV>>(listOf())
     val personnes = MutableStateFlow<List<Personne>>(listOf())
     val tvDetails = MutableStateFlow<TVDetails>(TVDetails())
+    val tv = MutableStateFlow<TVDetails>(TVDetails())
+
 
     val api_key = "a8f00cd3af0d5728d07aa5c481f326a3"
 
@@ -49,7 +51,19 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getTVdetails(tvid: Int) {
+    fun searchSeries(motcle: String) {
+        viewModelScope.launch {
+            tvs.value = retrofit.getTVParMotCle(api_key, motcle).results
+        }
+    }
+
+    fun searchPersonnes(motcle: String) {
+        viewModelScope.launch {
+            personnes.value = retrofit.getPersonneParMotCle(api_key, motcle).results
+        }
+    }
+
+    fun getTVdetails(tvid: String) {
         viewModelScope.launch {
             tvDetails.value = retrofit.getDetailsTV(tvid, api_key)
         }

@@ -46,3 +46,28 @@ fun PersonnesAffiche(viewModel: MainViewModel, windowClass: WindowSizeClass, nav
         }
     }
 }
+
+@Composable
+fun PersonneRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController, motcle : String ) {
+    val personnes by viewModel.personnes.collectAsState()
+
+    if (personnes.isEmpty()) viewModel.searchPersonnes(motcle)
+
+    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
+        items(personnes) { personne ->
+            Card(
+                Modifier.padding(8.dp) .fillMaxSize(),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                )
+            ) {
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w500" + personne.profile_path,
+                    contentDescription = "Affiche de la série",
+                    Modifier.fillMaxSize()
+                )
+                Text(personne.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+            }
+        }
+    }
+}
