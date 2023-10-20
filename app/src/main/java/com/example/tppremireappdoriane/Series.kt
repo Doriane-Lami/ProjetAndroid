@@ -1,12 +1,18 @@
 package com.example.tppremireappdoriane
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
@@ -18,7 +24,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -30,12 +39,16 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
 
     if (tvs.isEmpty()) viewModel.getSeries()
 
-    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center
+    ) {
         items(tvs) { tv ->
             Card(
-                onClick = { //SerieDetails(tv.id, viewModel, windowClass, navController)
-                    navController.navigate("SerieDetails/"+tv.id)
-                          },
+                onClick = {
+                    navController.navigate("SerieDetails/" + tv.id)
+                },
                 Modifier
                     .padding(8.dp)
                     .fillMaxSize(),
@@ -48,8 +61,16 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
                     contentDescription = "Affiche de la série",
                     Modifier.fillMaxSize()
                 )
-                Text(tv.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
-                Text(tv.first_air_date, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                Text(
+                    tv.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    tv.first_air_date,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -57,12 +78,21 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SeriesRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController, motcle : String ) {
+fun SeriesRecherche(
+    viewModel: MainViewModel,
+    windowClass: WindowSizeClass,
+    navController: NavController,
+    motcle: String
+) {
     val tvs by viewModel.tvs.collectAsState()
 
     if (tvs.isEmpty()) viewModel.searchSeries(motcle)
 
-    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center
+    ) {
         items(tvs) { tv ->
             Card(
                 Modifier
@@ -77,8 +107,16 @@ fun SeriesRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navC
                     contentDescription = "Affiche de la série",
                     Modifier.fillMaxSize()
                 )
-                Text(tv.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
-                Text(tv.first_air_date, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                Text(
+                    tv.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    tv.first_air_date,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -86,21 +124,51 @@ fun SeriesRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navC
 
 
 @Composable
-fun SerieDetails(tvid: String, viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
+fun SerieDetails(
+    tvid: String,
+    viewModel: MainViewModel,
+    windowClass: WindowSizeClass,
+    navController: NavController
+) {
     val tv by viewModel.tv.collectAsState()
 
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         viewModel.getTVdetails(tvid)
     }
 
-    AsyncImage(
-        model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
-        contentDescription = "Affiche de la série",
-        Modifier.fillMaxSize()
-    )
-    Text(tv.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
-    Text(tv.first_air_date, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
-
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row() {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500" + tv.backdrop_path,
+                contentDescription = "Affiche de la série",
+                Modifier.fillMaxWidth()
+            )
+        }
+        Row() {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
+                contentDescription = "Affiche de la série",
+                //Modifier.fillMaxSize()
+            )
+            Column() {
+                Text(
+                    tv.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    tv.first_air_date,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Text(
+            tv.overview,
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center
+        )
     }
+}
 
 

@@ -14,7 +14,6 @@ class MainViewModel : ViewModel() {
     val movies = MutableStateFlow<List<Movie>>(listOf())
     val tvs = MutableStateFlow<List<TV>>(listOf())
     val personnes = MutableStateFlow<List<Personne>>(listOf())
-    val tvDetails = MutableStateFlow<TVDetails>(TVDetails())
     val tv = MutableStateFlow<TVDetails>(TVDetails())
 
 
@@ -65,7 +64,7 @@ class MainViewModel : ViewModel() {
 
     fun getTVdetails(tvid: String) {
         viewModelScope.launch {
-            tvDetails.value = retrofit.getDetailsTV(tvid, api_key)
+            tv.value = retrofit.getDetailsTV(tvid, api_key)
         }
     }
 
