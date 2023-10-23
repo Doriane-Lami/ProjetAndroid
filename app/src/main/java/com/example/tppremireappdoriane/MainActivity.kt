@@ -224,6 +224,15 @@ class MainActivity : ComponentActivity() {
                             navController
                         )
                     }
+                    composable("FilmDetails/{tvid}") {
+                        val tvid = it.arguments?.getString("tvid") ?: ""
+                        FilmDetails(
+                            tvid,
+                            viewModel,
+                            windowSizeClass,
+                            navController
+                        )
+                    }
                 }
             }
         }

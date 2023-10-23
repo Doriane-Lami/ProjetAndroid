@@ -27,6 +27,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -137,66 +138,110 @@ fun SerieDetails(
 ) {
     val tv by viewModel.tv.collectAsState()
 
+
     LaunchedEffect(true) {
         viewModel.getTVdetails(tvid)
     }
 
-    Column(modifier = Modifier.verticalScroll(
-        rememberScrollState())) {
-        Row() {
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500" + tv.backdrop_path,
-                contentDescription = "Affiche de la série",
-                Modifier.fillMaxWidth()
-            )
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w342" + tv.poster_path,
-                contentDescription = "Affiche de la série",
-                //Modifier.fillMaxSize()
-            )
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    tv.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    tv.first_air_date,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
-                var genres = ""
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            Row() {
 
-                tv.genres.forEach { genres += it.name +", "}
-                Text(
-                    text = genres,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
+
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(
+                            rememberScrollState()
+                        )
+                        .fillMaxSize()
+                ) {
+                    AsyncImage(
+                        model = "https://image.tmdb.org/t/p/w1280" + tv.backdrop_path,
+                        contentDescription = "Affiche de la série",
+                        Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w342" + tv.poster_path,
+                            contentDescription = "Affiche de la série",
+                            //Modifier.fillMaxSize()
+                        )
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                tv.name,
+                                style = MaterialTheme.typography.headlineMedium,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Text(
+                                tv.first_air_date,
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center
+                            )
+                            var genres = ""
+
+                            tv.genres.forEach { genres += it.name + ", " }
+                            Text(
+                                text = genres,
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Synopsis",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Left
+                    )
+                    Text(
+                        tv.overview,
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(horizontal = 6.dp)
+                    )
+                }
+            }
+            Row() {
+
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    items(tv.credits.cast.take(10)) { cast ->
+                        Card(
+                            Modifier
+                                .padding(8.dp)
+                                .fillMaxSize(),
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            )
+                        ) {
+                            AsyncImage(
+                                model = "https://image.tmdb.org/t/p/w500" + cast.profile_path,
+                                contentDescription = "Affiche de la série",
+                                Modifier.fillMaxSize()
+                            )
+                            Text(
+                                text = cast.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = "Synopsis",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Left
-        )
-        Text(
-            tv.overview,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Justify,
-            modifier = Modifier.padding(horizontal = 6.dp)
-        )
     }
-
 }
+
+
 
 

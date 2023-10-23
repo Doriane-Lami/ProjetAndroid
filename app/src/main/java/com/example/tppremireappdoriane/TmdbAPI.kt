@@ -6,25 +6,28 @@ import retrofit2.http.Query
 
 interface TmdbAPI {
     @GET("trending/movie/week")
-    suspend fun derniersFilms(@Query("api_key") api_key: String): Movies
+    suspend fun derniersFilms(@Query("api_key") api_key: String, @Query("language") language: String): Movies
 
     @GET("trending/tv/week")
-    suspend fun dernieresSeries(@Query("api_key") api_key: String): TVs
+    suspend fun dernieresSeries(@Query("api_key") api_key: String, @Query("language") language: String): TVs
 
     @GET("trending/person/week")
-    suspend fun dernieresPersonnes(@Query("api_key") api_key: String): Personnes2
+    suspend fun dernieresPersonnes(@Query("api_key") api_key: String, @Query("language") language: String): Personnes2
 
     @GET("search/movie")
-    suspend fun getFilmParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): Movies
+    suspend fun getFilmParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String, @Query("language") language: String): Movies
 
     @GET("search/tv")
-    suspend fun getTVParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): TVs
+    suspend fun getTVParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String, @Query("language") language: String): TVs
 
     @GET("search/person")
-    suspend fun getPersonneParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String): Personnes2
+    suspend fun getPersonneParMotCle(@Query("api_key") api_key: String, @Query("query") motcle: String, @Query("language") language: String): Personnes2
 
     @GET("tv/{id}?append_to_response=credits")
-    suspend fun getDetailsTV(@Path("id") id: String, @Query("api_key") api_key: String ): TVDetails
+    suspend fun getDetailsTV(@Path("id") id: String, @Query("api_key") api_key: String, @Query("language") language: String): TVDetails
+
+    @GET("movie/{id}?append_to_response=credits")
+    suspend fun getDetailsFilms(@Path("id") id: String, @Query("api_key") api_key: String, @Query("language") language: String): FilmDetails
+
 }
 
-//https://api.themoviedb.org/3/movie/157336?api_key=a8f00cd3af0d5728d07aa5c481f326a3&append_to_response=overview
