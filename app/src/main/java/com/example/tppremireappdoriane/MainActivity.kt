@@ -5,11 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 //import androidx.compose.foundation.layout.BoxScopeInstance.align
 //import androidx.compose.foundation.layout.ColumnScopeInstance.align
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
@@ -42,7 +47,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass.Companion.Compact
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import coil.size.Size
+import com.example.tppremireappdoriane.ui.theme.Purple40
 
 
 class MainActivity : ComponentActivity() {
@@ -73,6 +82,27 @@ class MainActivity : ComponentActivity() {
 
 
             Scaffold(
+                /*
+                floatingActionButton = {
+                    when (windowSizeClass.widthSizeClass) {
+                        WindowWidthSizeClass.Medium -> {
+                            if (currentDestination?.route != "Home") {
+                                Box(modifier = Modifier
+                                    .clickable { searchVisible = true }
+                                    .clip(CircleShape)
+                                    .background(Purple40)
+                                    .size(50.dp)
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Search,
+                                        contentDescription = "Recherche flottante"
+                                    )
+                                }
+                            }
+                        }
+                    }
+                },
+                */
                 bottomBar = {
                     if (currentDestination?.route != "Home") {
                         BottomNavigation {
