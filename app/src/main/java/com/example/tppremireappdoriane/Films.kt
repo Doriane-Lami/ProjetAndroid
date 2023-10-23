@@ -39,15 +39,6 @@ import coil.compose.AsyncImage
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
-@Composable
-fun Test(windowClass: WindowSizeClass, navController: NavController) {
-    Text(text = "coucou")
-    Button(onClick = { navController.navigate("Home") }) {
-        Text(text = "Retour")
-    }
-}
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Films(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
@@ -55,38 +46,79 @@ fun Films(viewModel: MainViewModel, windowClass: WindowSizeClass, navController:
 
     if (movies.isEmpty()) viewModel.getMovies()
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        items(movies) { movie ->
-            Card(
-                onClick = {
-                    navController.navigate("FilmDetails/" + movie.id)
-                },
-                Modifier
-                    .padding(8.dp)
-                    .fillMaxSize(),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                )
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500" + movie.poster_path,
-                    contentDescription = "Affiche du film",
-                    Modifier.fillMaxSize()
-                )
-                Text(
-                    movie.original_title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    movie.release_date,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
+                items(movies) { movie ->
+                    Card(
+                        onClick = {
+                            navController.navigate("FilmDetails/" + movie.id)
+                        },
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + movie.poster_path,
+                            contentDescription = "Affiche du film",
+                            Modifier.fillMaxSize()
+                        )
+                        Text(
+                            movie.original_title,
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            movie.release_date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+        else -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(4),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(movies) { movie ->
+                    Card(
+                        onClick = {
+                            navController.navigate("FilmDetails/" + movie.id)
+                        },
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + movie.poster_path,
+                            contentDescription = "Affiche du film",
+                            Modifier.fillMaxSize()
+                        )
+                        Text(
+                            movie.original_title,
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            movie.release_date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }
@@ -183,7 +215,10 @@ fun FilmDetails(
                     Modifier.padding(5.dp)
                     //Modifier.fillMaxSize()
                 )
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier= Modifier.padding(3.dp)) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(3.dp)
+                ) {
                     Text(
                         film.title,
                         style = MaterialTheme.typography.headlineMedium,

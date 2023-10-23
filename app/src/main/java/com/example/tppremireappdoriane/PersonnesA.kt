@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,40 +24,100 @@ import coil.compose.AsyncImage
 
 
 @Composable
-fun PersonnesAffiche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController) {
+fun PersonnesAffiche(
+    viewModel: MainViewModel,
+    windowClass: WindowSizeClass,
+    navController: NavController
+) {
     val personnes by viewModel.personnes.collectAsState()
 
     if (personnes.isEmpty()) viewModel.getPersonnes()
 
-    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
-        items(personnes) { personne ->
-            Card(
-                Modifier.padding(8.dp) .fillMaxSize(),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                )
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500" + personne.profile_path,
-                    contentDescription = "Affiche de la série",
-                    Modifier.fillMaxSize()
-                )
-                Text(personne.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                items(personnes) { personne ->
+                    Card(
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + personne.profile_path,
+                            contentDescription = "Affiche de la série",
+                            Modifier.fillMaxSize()
+                        )
+                        Text(
+                            personne.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+        else -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(4),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(personnes) { personne ->
+                    Card(
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + personne.profile_path,
+                            contentDescription = "Affiche de la série",
+                            Modifier.fillMaxSize()
+                        )
+                        Text(
+                            personne.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+
 @Composable
-fun PersonneRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, navController: NavController, motcle : String ) {
+fun PersonneRecherche(
+    viewModel: MainViewModel,
+    windowClass: WindowSizeClass,
+    navController: NavController,
+    motcle: String
+) {
     val personnes by viewModel.personnes.collectAsState()
 
     if (personnes.isEmpty()) viewModel.searchPersonnes(motcle)
 
-    LazyVerticalGrid(columns = GridCells.Fixed(2), Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center
+    ) {
         items(personnes) { personne ->
             Card(
-                Modifier.padding(8.dp) .fillMaxSize(),
+                Modifier
+                    .padding(8.dp)
+                    .fillMaxSize(),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 )
@@ -66,7 +127,11 @@ fun PersonneRecherche(viewModel: MainViewModel, windowClass: WindowSizeClass, na
                     contentDescription = "Affiche de la série",
                     Modifier.fillMaxSize()
                 )
-                Text(personne.name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                Text(
+                    personne.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

@@ -40,6 +40,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 import androidx.compose.material3.DockedSearchBar
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass.Companion.Compact
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.unit.dp
 
 
@@ -99,7 +101,12 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("Series")
                                 })
                             BottomNavigationItem(
-                                icon = { Icon(Icons.Filled.Person, contentDescription = null) },
+                                icon = {
+                                    Icon(
+                                        Icons.Filled.Person,
+                                        contentDescription = null
+                                    )
+                                },
                                 label = { Text("Personnes") },
                                 selected = false,
                                 onClick = {
@@ -107,78 +114,82 @@ class MainActivity : ComponentActivity() {
                                 })
                         }
                     }
-                },   //} du if pour ne pas afficher dans Home
+                },
                 topBar = {
-                    if (currentDestination?.route != "Home") {
-                        if (!searchVisible) {
-                            TopAppBar(
-                                title = { Text("Super App'") },
-                                actions = {
-                                    IconButton(onClick = { searchVisible = true }) {
-                                        Icon(
-                                            Icons.Filled.Search,
-                                            contentDescription = "recherche"
-                                        )
-                                    }
-                                },
-                                navigationIcon = {
-                                    IconButton(onClick = { }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.ArrowBack,
-                                            contentDescription = "Localized description"
-                                        )
-                                    }
-                                },
-                            )
-                        } else {
-                            DockedSearchBar(
-                                modifier = Modifier
-                                    .padding(top = 8.dp)
-                                    .padding(horizontal = 4.dp)
-                                    .height(50.dp)
-                                    .fillMaxSize(),
-                                query = searchText,
-                                onQueryChange = { searchText = it },
-                                onSearch = {
-                                    if (currentDestination?.route == "Films") {
-                                        //historyFilms.add(searchText)
-                                        viewModel.searchMovies(it)
-                                        active = false
-                                    }else if (currentDestination?.route == "Series") {
-                                        viewModel.searchSeries(it)
-                                        //historySeries.add(text)
-                                        active = false
-                                    }else if (currentDestination?.route == "Personnes") {
-                                        viewModel.searchPersonnes(it)
-                                        //historyActeurs.add(text)
-                                        active = false
-                                    }
-                                },
-                                active = active,
-                                onActiveChange = { active = it },
-                                placeholder = { Text("Recherche") },
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Default.Search,
-                                        contentDescription = null
+                    when (windowSizeClass.widthSizeClass) {
+                        WindowWidthSizeClass.Compact -> {
+                            if (currentDestination?.route != "Home") {
+                                if (!searchVisible) {
+                                    TopAppBar(
+                                        title = { Text("Super App'") },
+                                        actions = {
+                                            IconButton(onClick = { searchVisible = true }) {
+                                                Icon(
+                                                    Icons.Filled.Search,
+                                                    contentDescription = "recherche"
+                                                )
+                                            }
+                                        },
+                                        navigationIcon = {
+                                            IconButton(onClick = { }) {
+                                                Icon(
+                                                    imageVector = Icons.Filled.ArrowBack,
+                                                    contentDescription = "Localized description"
+                                                )
+                                            }
+                                        },
                                     )
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = { searchVisible = false ; searchText=""}) {
-                                        Icon(
-                                            Icons.Default.Close,
-                                            contentDescription = null
-                                        )
+                                } else {
+                                    DockedSearchBar(
+                                        modifier = Modifier
+                                            .padding(top = 8.dp)
+                                            .padding(horizontal = 4.dp)
+                                            .height(50.dp)
+                                            .fillMaxSize(),
+                                        query = searchText,
+                                        onQueryChange = { searchText = it },
+                                        onSearch = {
+                                            if (currentDestination?.route == "Films") {
+                                                //historyFilms.add(searchText)
+                                                viewModel.searchMovies(it)
+                                                active = false
+                                            } else if (currentDestination?.route == "Series") {
+                                                viewModel.searchSeries(it)
+                                                //historySeries.add(text)
+                                                active = false
+                                            } else if (currentDestination?.route == "Personnes") {
+                                                viewModel.searchPersonnes(it)
+                                                //historyActeurs.add(text)
+                                                active = false
+                                            }
+                                        },
+                                        active = active,
+                                        onActiveChange = { active = it },
+                                        placeholder = { Text("Recherche") },
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Default.Search,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            IconButton(onClick = {
+                                                searchVisible = false; searchText = ""
+                                            }) {
+                                                Icon(
+                                                    Icons.Default.Close,
+                                                    contentDescription = null
+                                                )
+                                            }
+                                        },
+                                    ) {
                                     }
-                                },
-                            ) {
+                                }
                             }
                         }
                     }
                 },
             )
-
-
             { innerPadding ->
                 NavHost(navController, startDestination = "Home", Modifier.padding(innerPadding)) {
                     composable("Home") { Screen(windowSizeClass, navController) }

@@ -46,38 +46,81 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
 
     if (tvs.isEmpty()) viewModel.getSeries()
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        items(tvs) { tv ->
-            Card(
-                onClick = {
-                    navController.navigate("SerieDetails/" + tv.id)
-                },
-                Modifier
-                    .padding(8.dp)
-                    .fillMaxSize(),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                )
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
-                    contentDescription = "Affiche de la série",
-                    //Modifier.fillMaxSize()
-                )
-                Text(
-                    tv.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    tv.first_air_date,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
+                items(tvs) { tv ->
+                    Card(
+                        onClick = {
+                            navController.navigate("SerieDetails/" + tv.id)
+                        },
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
+                            contentDescription = "Affiche de la série",
+                            //Modifier.fillMaxSize()
+                        )
+                        Text(
+                            tv.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            tv.first_air_date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+
+        else -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(4),
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(tvs) { tv ->
+                    Card(
+                        onClick = {
+                            navController.navigate("SerieDetails/" + tv.id)
+                        },
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        )
+                    ) {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
+                            contentDescription = "Affiche de la série",
+                            //Modifier.fillMaxSize()
+                        )
+                        Text(
+                            tv.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            tv.first_air_date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }
@@ -102,6 +145,9 @@ fun SeriesRecherche(
     ) {
         items(tvs) { tv ->
             Card(
+                onClick = {
+                    navController.navigate("SerieDetails/" + tv.id)
+                },
                 Modifier
                     .padding(8.dp)
                     .fillMaxSize(),
@@ -169,7 +215,10 @@ fun SerieDetails(
                     modifier = Modifier.padding(5.dp)
                     //Modifier.fillMaxSize()
                 )
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier= Modifier.padding(3.dp)) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(3.dp)
+                ) {
                     Text(
                         tv.name,
                         style = MaterialTheme.typography.headlineMedium,
