@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
@@ -65,7 +66,7 @@ fun Series(viewModel: MainViewModel, windowClass: WindowSizeClass, navController
                 AsyncImage(
                     model = "https://image.tmdb.org/t/p/w500" + tv.poster_path,
                     contentDescription = "Affiche de la série",
-                    Modifier.fillMaxSize()
+                    //Modifier.fillMaxSize()
                 )
                 Text(
                     tv.name,
@@ -142,105 +143,102 @@ fun SerieDetails(
     LaunchedEffect(true) {
         viewModel.getTVdetails(tvid)
     }
-
-    when (windowClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            Row() {
-
-
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(
-                            rememberScrollState()
-                        )
-                        .fillMaxSize()
-                ) {
-                    AsyncImage(
-                        model = "https://image.tmdb.org/t/p/w1280" + tv.backdrop_path,
-                        contentDescription = "Affiche de la série",
-                        Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        AsyncImage(
-                            model = "https://image.tmdb.org/t/p/w342" + tv.poster_path,
-                            contentDescription = "Affiche de la série",
-                            //Modifier.fillMaxSize()
-                        )
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                tv.name,
-                                style = MaterialTheme.typography.headlineMedium,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                            )
-                            Text(
-                                tv.first_air_date,
-                                style = MaterialTheme.typography.bodyLarge,
-                                textAlign = TextAlign.Center
-                            )
-                            var genres = ""
-
-                            tv.genres.forEach { genres += it.name + ", " }
-                            Text(
-                                text = genres,
-                                style = MaterialTheme.typography.bodyLarge,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w1280" + tv.backdrop_path,
+                contentDescription = "Affiche de la série",
+                Modifier.fillMaxWidth()
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w342" + tv.poster_path,
+                    contentDescription = "Affiche de la série",
+                    modifier = Modifier.padding(5.dp)
+                    //Modifier.fillMaxSize()
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier= Modifier.padding(3.dp)) {
                     Text(
-                        text = "Synopsis",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Medium,
-                        textAlign = TextAlign.Left
+                        tv.name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        tv.overview,
+                        tv.first_air_date,
                         style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Justify,
-                        modifier = Modifier.padding(horizontal = 6.dp)
+                        textAlign = TextAlign.Center
+                    )
+                    var genres = ""
+
+                    tv.genres.forEach { genres += it.name + ", " }
+                    Text(
+                        text = genres,
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
-            Row() {
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
 
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    items(tv.credits.cast.take(10)) { cast ->
-                        Card(
-                            Modifier
-                                .padding(8.dp)
-                                .fillMaxSize(),
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            )
-                        ) {
-                            AsyncImage(
-                                model = "https://image.tmdb.org/t/p/w500" + cast.profile_path,
-                                contentDescription = "Affiche de la série",
-                                Modifier.fillMaxSize()
-                            )
-                            Text(
-                                text = cast.name,
-                                style = MaterialTheme.typography.bodyLarge,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                }
+            Text(
+                text = " Synopsis",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Left
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+
+            Text(
+                tv.overview,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(horizontal = 6.dp)
+            )
+        }
+
+        items(tv.credits.cast.take(10)) { cast ->
+            Card(
+                Modifier
+                    .padding(8.dp)
+                    .fillMaxSize(),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                )
+            ) {
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w500" + cast.profile_path,
+                    contentDescription = "Affiche de la série",
+                    Modifier.fillMaxSize()
+                )
+                Text(
+                    text = cast.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
 }
+
 
 
 
